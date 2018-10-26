@@ -70,7 +70,7 @@ def tinyMazeSearch(problem):
     from game import Directions
     s = Directions.SOUTH
     w = Directions.WEST
-    return  [s, s, w, s, w, w, s, w]
+    return [s, s, w, s, w, w, s, w]
 
 def depthFirstSearch(problem):
     """
@@ -87,12 +87,51 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    container = util.Stack()
+    origin = problem.getStartState()
+    container.push([(origin, 'Stop', 0)])
+    visited = []
+
+    while not container.isEmpty():
+        path = container.pop()
+        vertex = path[-1][0]
+        if problem.isGoalState(vertex):
+            res = [node[1] for node in path][1:]
+            return res
+
+        if vertex not in visited:
+            visited.append(vertex)
+            for successor in problem.getSuccessors(vertex):
+                if successor[0] not in visited:
+                    nPath = path[:]
+                    nPath.append(successor)
+                    container.push(nPath)
+
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    container = util.Queue()
+    origin = problem.getStartState()
+    container.push([(origin, 'Stop', 0)])
+    visited = []
+
+    while not container.isEmpty():
+        path = container.pop()
+        vertex = path[-1][0]
+        if problem.isGoalState(vertex):
+            res = [node[1] for node in path][1:]
+            return res
+
+        if vertex not in visited:
+            visited.append(vertex)
+            for successor in problem.getSuccessors(vertex):
+                if successor[0] not in visited:
+                    nPath = path[:]
+                    nPath.append(successor)
+                    container.push(nPath)
+
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
